@@ -1,0 +1,8 @@
+### Recuperar todo los trabajos
+GET http://localhost:3000/jobs
+
+### Recuperar todo los trabajos por id
+GET http://localhost:3000/jobs/id
+
+### Buscar
+GET http://localhost:3000/jobs/search
