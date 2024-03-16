@@ -16,8 +16,20 @@ app.get('/jobs', async (req, res) => {
 })
 
 // Obtener una oferta de trabajo por ID
-app.get('/jobs/:id', (req, res) => {
-  res.send('jobs por id')
+app.get('/jobs/:id', async (req, res) => {
+  try {
+    const jobId = req.params.id
+    const job = await JobsModel.getById(jobId)
+
+    if (job) {
+      res.json(job)
+    } else {
+      res.status(404).send('Oferta de trabajo no encontrada')
+    }
+  } catch (error) {
+    console.error('Error al obtener la oferta de trabajo por ID:', error)
+    res.status(500).send('Error interno del servidor')
+  }
 })
 
 // Buscar ofertas de trabajo por criterios específicos
