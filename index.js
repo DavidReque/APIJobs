@@ -1,11 +1,18 @@
 import express from 'express'
+import { JobsModel } from './models/mysql/jobs.js'
 
 const app = express()
 const PORT = process.env.PORT ?? 3000
 
 // Obtener todas las ofertas de trabajo
-app.get('/jobs', (req, res) => {
-  res.send('jobs')
+app.get('/jobs', async (req, res) => {
+  try {
+    const jobs = await JobsModel.getAll()
+    res.json(jobs)
+  } catch (error) {
+    console.error('Error al obtener todas las ofertas de trabajo:', error)
+    res.status(500).send('Error interno del servidor')
+  }
 })
 
 // Obtener una oferta de trabajo por ID
