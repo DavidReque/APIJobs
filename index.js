@@ -33,8 +33,17 @@ app.get('/jobs/:id', async (req, res) => {
 })
 
 // Buscar ofertas de trabajo por criterios específicos
-app.get('/jobs/search', (req, res) => {
-  res.send('busqueda')
+app.get('/jobs/query', async (req, res) => {
+  try {
+    const { title, location, salary } = req.query
+
+    const jobs = await JobsModel.search({ title, location, salary })
+
+    res.json(jobs)
+  } catch (error) {
+    console.error('Error al buscar ofertas de trabajo:', error)
+    res.status(500).json({ error: 'Error interno del servidor' })
+  }
 })
 
 // Crear una nueva oferta de trabajo

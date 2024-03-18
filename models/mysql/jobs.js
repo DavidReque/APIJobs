@@ -34,4 +34,33 @@ export class JobsModel {
       throw new Error('Error interno del servidor')
     }
   }
+
+  static async search ({ title, location, salary }) {
+    try {
+      let query = 'SELECT * FROM jobs WHERE 1'
+      const queryParams = []
+
+      if (title) {
+        query += ' AND title LIKE ?' // Añadimos una condición para buscar títulos que contengan el texto proporcionado
+        queryParams.push(`%${title.toLowerCase()}%`) // Convertimos el título proporcionado a minúsculas antes de añadirlo a los parámetros de consulta
+      }
+
+      if (location) {
+        query += ' AND title LIKE ?'
+        queryParams.push(`%${location.toLowerCase()}%`)
+      }
+
+      if (salary) {
+        query += ' AND salary = ?'
+        queryParams.push(salary)
+      }
+
+      const [rows] = await connection.query(query, queryParams)
+
+      return rows
+    } catch (error) {
+      console.error('Error al buscar ofertas de trabajo por criterios específicos:', error)
+      throw new Error('Error interno del servidor')
+    }
+  }
 }
