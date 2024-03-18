@@ -5,4 +5,4 @@ GET http://localhost:3000/jobs
 GET http://localhost:3000/jobs/1
 
 ### Buscar
-GET http://localhost:3000/jobs/search
+GET http://localhost:3000/jobs/query?salary=50000.00
