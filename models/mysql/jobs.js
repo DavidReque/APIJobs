@@ -14,7 +14,7 @@ const config = {
 const connection = await mysql.createConnection(config)
 
 export class JobsModel {
-  static async getAll ({ title }) {
+  static async getAll ({ title, location }) {
     try {
       if (title) {
         const lowerCaseTitle = title.toLowerCase()
@@ -28,6 +28,23 @@ export class JobsModel {
         }
 
         const [{ id }] = titles
+        const [rows] = await connection.query('SELECT * FROM jobs WHERE id = ?;', [id])
+
+        return rows
+      }
+
+      if (location) {
+        const lowerCaseLocation = location.toLowerCase()
+
+        const [locations] = await connection.query(
+          'SELECT id, location FROM jobs WHERE LOWER(location) = ?;', [lowerCaseLocation]
+        )
+
+        if (location.length === 0) {
+          return []
+        }
+
+        const [{ id }] = locations
         const [rows] = await connection.query('SELECT * FROM jobs WHERE id = ?;', [id])
 
         return rows
