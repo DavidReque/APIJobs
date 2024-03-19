@@ -2,7 +2,7 @@
 GET http://localhost:3000/jobs
 
 ### Recuperar todo los trabajos por id
-GET http://localhost:3000/jobs/1
+GET http://localhost:3000/jobs/2
 
 ### Buscar
-GET http://localhost:3000/jobs/query?salary=50000.00
+GET http://localhost:3000/jobs?title=desarrollador

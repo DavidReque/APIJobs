@@ -7,7 +7,8 @@ const PORT = process.env.PORT ?? 3000
 // Obtener todas las ofertas de trabajo
 app.get('/jobs', async (req, res) => {
   try {
-    const jobs = await JobsModel.getAll()
+    const { title } = req.query
+    const jobs = await JobsModel.getAll({ title })
     res.json(jobs)
   } catch (error) {
     console.error('Error al obtener todas las ofertas de trabajo:', error)
@@ -29,20 +30,6 @@ app.get('/jobs/:id', async (req, res) => {
   } catch (error) {
     console.error('Error al obtener la oferta de trabajo por ID:', error)
     res.status(500).send('Error interno del servidor')
-  }
-})
-
-// Buscar ofertas de trabajo por criterios específicos
-app.get('/jobs/query', async (req, res) => {
-  try {
-    const { title, location, salary } = req.query
-
-    const jobs = await JobsModel.search({ title, location, salary })
-
-    res.json(jobs)
-  } catch (error) {
-    console.error('Error al buscar ofertas de trabajo:', error)
-    res.status(500).json({ error: 'Error interno del servidor' })
   }
 })
 
