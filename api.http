@@ -8,4 +8,6 @@ GET http://localhost:3000/jobs/2
 GET http://localhost:3000/jobs?title=Diseñador%20UX/UI
 ### Buscar location
 GET http://localhost:3000/jobs?location=nueva%20york
+### Buscar salario
+GET http://localhost:3000/jobs?salary=60000.00
 

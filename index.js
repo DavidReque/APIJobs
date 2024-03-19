@@ -7,8 +7,8 @@ const PORT = process.env.PORT ?? 3000
 // Obtener todas las ofertas de trabajo
 app.get('/jobs', async (req, res) => {
   try {
-    const { title, location } = req.query
-    const jobs = await JobsModel.getAll({ title, location })
+    const { title, location, salary } = req.query
+    const jobs = await JobsModel.getAll({ title, location, salary })
     res.json(jobs)
   } catch (error) {
     console.error('Error al obtener todas las ofertas de trabajo:', error)
