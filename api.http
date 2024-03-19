@@ -5,4 +5,7 @@ GET http://localhost:3000/jobs
 GET http://localhost:3000/jobs/2
 
 ### Buscar
-GET http://localhost:3000/jobs?title=desarrollador
+GET http://localhost:3000/jobs?title=Diseñador%20UX/UI
+### Buscar location
+GET http://localhost:3000/jobs?location=nueva%20york
+
