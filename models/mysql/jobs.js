@@ -140,4 +140,14 @@ export class JobsModel {
       throw new Error('No se pudo actualizar la oferta de trabajo')
     }
   }
+
+  static async delete (id) {
+    try {
+      const query = 'DELETE FROM jobs WHERE id = ?'
+      await connection.query(query, [id])
+    } catch (error) {
+      console.error('Error al eliminar la oferta de trabajo:', error)
+      throw new Error('Error interno del servidor al eliminar la oferta de trabajo')
+    }
+  }
 }

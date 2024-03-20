@@ -29,3 +29,7 @@ Content-Type: application/json
 {
     "title": "Desarrollador Blockchain"
 }
+
+### Delete
+DELETE http://localhost:3000/jobs/6
+Content-Type: application/json

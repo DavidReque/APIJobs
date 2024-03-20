@@ -70,8 +70,17 @@ app.patch('/jobs/:id', async (req, res) => {
 })
 
 // Eliminar una oferta de trabajo existente
-app.delete('/jobs/:id', (req, res) => {
-  res.send('eliminar')
+app.delete('/jobs/:id', async (req, res) => {
+  try {
+    const jobId = req.params.id
+
+    await JobsModel.delete(jobId)
+
+    res.status(200).send('Oferta de trabajo eliminada correctamente')
+  } catch (error) {
+    console.error('Error al eliminar la oferta de trabajo:', error)
+    res.status(500).send('Error interno del servidor al eliminar la oferta de trabajo')
+  }
 })
 
 app.listen(PORT, () => {
