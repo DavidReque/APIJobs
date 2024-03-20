@@ -55,8 +55,18 @@ app.post('/jobs', async (req, res) => {
 })
 
 // Actualizar una oferta de trabajo existente
-app.patch('/jobs/:id', (req, res) => {
-  res.send('actualizar')
+app.patch('/jobs/:id', async (req, res) => {
+  try {
+    const jobId = req.params.id // Obtener el ID de la oferta de trabajo de la URL
+    const updateData = req.body // Obtener los datos de actualización del cuerpo de la solicitud
+
+    await JobsModel.update(jobId, updateData)
+
+    res.status(200).send('Oferta de trabajo actualizada correctamente')
+  } catch (error) {
+    console.error('Error al actualizar la oferta de trabajo:', error)
+    res.status(500).send('Error interno del servidor al actualizar la oferta de trabajo')
+  }
 })
 
 // Eliminar una oferta de trabajo existente

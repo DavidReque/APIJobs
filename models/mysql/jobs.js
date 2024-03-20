@@ -99,4 +99,45 @@ export class JobsModel {
       throw new Error('Error interno del servidor')
     }
   }
+
+  static async update (id, { title, description, location, salary }) {
+    if (!title && !description && !location && !salary) {
+      throw new Error('Ningún campo proporcionado para actualizar')
+    }
+
+    const updates = []
+    const queryParams = []
+
+    if (title) {
+      updates.push('title = ?')
+      queryParams.push(title)
+    }
+
+    if (description) {
+      updates.push('description = ?')
+      queryParams.push(description)
+    }
+
+    if (location) {
+      updates.push('location = ?')
+      queryParams.push(location)
+    }
+
+    if (salary) {
+      updates.push('salary = ?')
+      queryParams.push(salary)
+    }
+
+    const query = `UPDATE jobs SET ${updates.join(', ')} WHERE id = ?`
+
+    const [result] = await connection.query(query, [...queryParams, id])
+
+    if (result.affectedRows === 1) {
+      const [updatedJob] = await connection.query('SELECT * FROM jobs WHERE id = ?', [id])
+
+      return updatedJob[0]
+    } else {
+      throw new Error('No se pudo actualizar la oferta de trabajo')
+    }
+  }
 }
