@@ -15,3 +15,7 @@ const JobSchema = z.object({
 export const validateJob = (input) => {
   return JobSchema.safeParse(input)
 }
+
+export const validatePartialJob = (input) => {
+  return JobSchema.partial().safeParse(input)
+}

@@ -1,6 +1,6 @@
 import express from 'express'
 import { JobsModel } from './models/mysql/jobs.js'
-import { validateJob } from './schemas/jobs.js'
+import { validateJob, validatePartialJob } from './schemas/jobs.js'
 
 const app = express()
 const PORT = process.env.PORT ?? 3000
@@ -62,6 +62,12 @@ app.patch('/jobs/:id', async (req, res) => {
   try {
     const jobId = req.params.id // Obtener el ID de la oferta de trabajo de la URL
     const updateData = req.body // Obtener los datos de actualización del cuerpo de la solicitud
+
+    const validationResult = validatePartialJob(updateData)
+
+    if (!validationResult.success) {
+      return res.status(400).json({ errors: validationResult.error })
+    }
 
     await JobsModel.update(jobId, updateData)
 

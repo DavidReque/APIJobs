@@ -23,13 +23,13 @@ Content-Type: application/json
 }
 
 ### Actualizar
-PATCH http://localhost:3000/jobs/4
+PATCH http://localhost:3000/jobs/8
 Content-Type: application/json
 
 {
-    "title": "Desarrollador Blockchain"
+    "title": "Desarrollador Fullstack"
 }
 
 ### Delete
-DELETE http://localhost:3000/jobs/5
+DELETE http://localhost:3000/jobs/7
 Content-Type: application/json
