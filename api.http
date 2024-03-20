@@ -11,3 +11,13 @@ GET http://localhost:3000/jobs?location=nueva%20york
 ### Buscar salario
 GET http://localhost:3000/jobs?salary=60000.00
 
+### Crear
+POST http://localhost:3000/jobs
+Content-Type: application/json
+
+{
+  "title": "Desarrollador Backend",
+  "description": "Se busca desarrollador Backend con experiencia en Node.js y Express.",
+  "location": "Tegucigalpa",
+  "salary": 40000.00
+}

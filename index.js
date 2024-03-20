@@ -4,6 +4,9 @@ import { JobsModel } from './models/mysql/jobs.js'
 const app = express()
 const PORT = process.env.PORT ?? 3000
 
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
 // Obtener todas las ofertas de trabajo
 app.get('/jobs', async (req, res) => {
   try {
@@ -34,8 +37,21 @@ app.get('/jobs/:id', async (req, res) => {
 })
 
 // Crear una nueva oferta de trabajo
-app.post('/jobs', (req, res) => {
-  res.send(' crear una nueva oferta de trabajo')
+app.post('/jobs', async (req, res) => {
+  try {
+    const { title, description, location, salary } = req.body
+
+    if (!title || !description || !location || !salary) {
+      return res.status(400).json({ error: 'Todos los campos son obligatorios' })
+    }
+
+    const newJob = await JobsModel.create({ title, description, location, salary })
+
+    res.status(201).json(newJob)
+  } catch (error) {
+    console.error('Error al crear una nueva oferta de trabajo:', error)
+    res.status(500).send('Error interno del servidor')
+  }
 })
 
 // Actualizar una oferta de trabajo existente

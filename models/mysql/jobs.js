@@ -76,4 +76,27 @@ export class JobsModel {
       throw new Error('Error interno del servidor')
     }
   }
+
+  static async create ({ title, description, location, salary }) {
+    try {
+      const query = 'INSERT INTO jobs (title, description, location, salary) VALUES (?, ?, ?, ?)'
+
+      const [result] = await connection.query(query, [title, description, location, salary])
+
+      if (result.affectedRows === 1) {
+        const newJobId = result.insertId
+
+        const [newJob] = await connection.query(
+          'SELECT * FROM jobs WHERE id = ?', newJobId
+        )
+
+        return newJob[0]
+      } else {
+        throw new Error('No se pudo crear la oferta de trabajo')
+      }
+    } catch (error) {
+      console.error('Error al crear una nueva oferta de trabajo:', error)
+      throw new Error('Error interno del servidor')
+    }
+  }
 }
