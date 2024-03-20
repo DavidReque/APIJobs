@@ -1,5 +1,6 @@
 import express from 'express'
 import { JobsModel } from './models/mysql/jobs.js'
+import { validateJob } from './schemas/jobs.js'
 
 const app = express()
 const PORT = process.env.PORT ?? 3000
@@ -39,13 +40,15 @@ app.get('/jobs/:id', async (req, res) => {
 // Crear una nueva oferta de trabajo
 app.post('/jobs', async (req, res) => {
   try {
-    const { title, description, location, salary } = req.body
+    const validationResult = validateJob(req.body)
 
-    if (!title || !description || !location || !salary) {
-      return res.status(400).json({ error: 'Todos los campos son obligatorios' })
+    if (!validationResult.success) {
+      return res.status(400).json({ error: validationResult.error.errors })
     }
 
-    const newJob = await JobsModel.create({ title, description, location, salary })
+    const { data: validatedData } = validationResult
+
+    const newJob = await JobsModel.create(validatedData)
 
     res.status(201).json(newJob)
   } catch (error) {

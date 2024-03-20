@@ -23,7 +23,7 @@ Content-Type: application/json
 }
 
 ### Actualizar
-PATCH http://localhost:3000/jobs/5
+PATCH http://localhost:3000/jobs/4
 Content-Type: application/json
 
 {
@@ -31,5 +31,5 @@ Content-Type: application/json
 }
 
 ### Delete
-DELETE http://localhost:3000/jobs/6
+DELETE http://localhost:3000/jobs/5
 Content-Type: application/json
