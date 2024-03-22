@@ -168,8 +168,6 @@ export class UserModel {
 
       const passwordMatch = await bcrypt.compare(password, user.password)
 
-      console.log(passwordMatch)
-
       if (passwordMatch) {
         const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, { expiresIn: '1h' })
 
