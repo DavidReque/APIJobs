@@ -92,6 +92,31 @@ app.delete('/jobs/:id', async (req, res) => {
   }
 })
 
+app.get('/login', (req, res) => {
+  res.sendFile(process.cwd() + '/client/index.html')
+})
+
+app.get('/register', (req, res) => {
+  res.sendFile(process.cwd() + '/client/register.html')
+})
+
+app.post('/register', async (req, res) => {
+  try {
+    const { username, password } = req.body
+
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Nombre de usuario y contraseña son obligatorios' })
+    }
+
+    const newUser = await UserModel.create({ username, password })
+
+    res.status(201).json(newUser)
+  } catch (error) {
+    console.error('Error al registrar al usuario:', error)
+    res.status(500).send('Error interno del servidor al registrar al usuario')
+  }
+})
+
 app.post('/auth', async (req, res) => {
   try {
     const { username, password } = req.body
@@ -101,7 +126,6 @@ app.post('/auth', async (req, res) => {
     }
 
     const result = await UserModel.auth({ username, password })
-
     if (result) {
       res.json(result)
     } else {
@@ -109,7 +133,7 @@ app.post('/auth', async (req, res) => {
     }
   } catch (error) {
     console.error('Error al autenticar al usuario:', error)
-    throw new Error('Error interno del servidor al hacer login')
+    res.status(500).json({ error: 'Error interno del servidor al hacer login' })
   }
 })
 

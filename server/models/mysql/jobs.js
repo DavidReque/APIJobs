@@ -168,6 +168,8 @@ export class UserModel {
 
       const passwordMatch = await bcrypt.compare(password, user.password)
 
+      console.log(passwordMatch)
+
       if (passwordMatch) {
         const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, { expiresIn: '1h' })
 
@@ -178,6 +180,28 @@ export class UserModel {
     } catch (error) {
       console.error('Error al autenticar al usuario:', error)
       throw new Error('Error interno del servidor al hacer login')
+    }
+  }
+
+  static async create ({ username, password }) {
+    try {
+      const salt = await bcrypt.genSalt(10)
+
+      const hashedPassword = await bcrypt.hash(password, salt)
+
+      const query = 'INSERT INTO users (username, password) VALUES (?, ?)'
+      const [result] = await connection.query(query, [username, hashedPassword])
+
+      if (result.affectedRows === 1) {
+        const newUserId = result.insertId
+        const [newUser] = await connection.query('SELECT * FROM users WHERE id = ?', newUserId)
+        return newUser[0]
+      } else {
+        throw new Error('No se pudo crear el usuario')
+      }
+    } catch (error) {
+      console.error('Error al crear un nuevo usuario:', error)
+      throw new Error('Error interno del servidor')
     }
   }
 }
