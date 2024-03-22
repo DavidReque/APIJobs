@@ -1,5 +1,5 @@
 import express from 'express'
-import { JobsModel } from './models/mysql/jobs.js'
+import { JobsModel, UserModel } from './models/mysql/jobs.js'
 import { validateJob, validatePartialJob } from './schemas/jobs.js'
 
 const app = express()
@@ -89,6 +89,27 @@ app.delete('/jobs/:id', async (req, res) => {
   } catch (error) {
     console.error('Error al eliminar la oferta de trabajo:', error)
     res.status(500).send('Error interno del servidor al eliminar la oferta de trabajo')
+  }
+})
+
+app.post('/auth', async (req, res) => {
+  try {
+    const { username, password } = req.body
+
+    if (!username || !password) {
+      return res.status(400).json({ error: 'Nombre de usuario y contraseña son obligatorios' })
+    }
+
+    const result = await UserModel.auth({ username, password })
+
+    if (result) {
+      res.json(result)
+    } else {
+      res.status(401).json({ error: 'Nombre de usuario o contraseña incorrectos' })
+    }
+  } catch (error) {
+    console.error('Error al autenticar al usuario:', error)
+    throw new Error('Error interno del servidor al hacer login')
   }
 })
 

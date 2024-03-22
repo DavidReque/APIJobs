@@ -1,5 +1,7 @@
 import dotenv from 'dotenv'
 import mysql from 'mysql2/promise'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 dotenv.config()
 
@@ -148,6 +150,34 @@ export class JobsModel {
     } catch (error) {
       console.error('Error al eliminar la oferta de trabajo:', error)
       throw new Error('Error interno del servidor al eliminar la oferta de trabajo')
+    }
+  }
+}
+
+export class UserModel {
+  static async auth ({ username, password }) {
+    try {
+      const query = 'SELECT * FROM users WHERE `username` = ?'
+      const [rows] = await connection.query(query, [username])
+
+      if (rows.length === 0) {
+        return null
+      }
+
+      const user = rows[0]
+
+      const passwordMatch = await bcrypt.compare(password, user.password)
+
+      if (passwordMatch) {
+        const token = jwt.sign({ id: user.id }, process.env.SECRET_KEY, { expiresIn: '1h' })
+
+        return { user, token }
+      } else {
+        return null // Contraseña incorrecta
+      }
+    } catch (error) {
+      console.error('Error al autenticar al usuario:', error)
+      throw new Error('Error interno del servidor al hacer login')
     }
   }
 }

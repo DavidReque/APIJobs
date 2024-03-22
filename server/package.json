@@ -19,7 +19,9 @@
     "extends": "standard"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "express": "4.18.3",
+    "jsonwebtoken": "^9.0.2",
     "mysql2": "3.9.2",
     "zod": "^3.22.4"
   }
