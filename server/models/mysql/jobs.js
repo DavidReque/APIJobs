@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import mysql from 'mysql2/promise'
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 
 dotenv.config()
