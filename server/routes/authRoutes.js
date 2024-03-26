@@ -3,14 +3,6 @@ import { UserModel } from '../models/mysql/jobs.js'
 
 const authRouter = express.Router()
 
-authRouter.get('/login', (req, res) => {
-  res.sendFile(process.cwd() + '/client/index.html')
-})
-
-authRouter.get('/register', (req, res) => {
-  res.sendFile(process.cwd() + '/client/register.html')
-})
-
 authRouter.post('/register', async (req, res) => {
   try {
     const { username, password } = req.body
@@ -28,7 +20,7 @@ authRouter.post('/register', async (req, res) => {
   }
 })
 
-authRouter.post('/auth', async (req, res) => {
+authRouter.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body
 

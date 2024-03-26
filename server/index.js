@@ -2,7 +2,6 @@ import express from 'express'
 import { JobsModel } from './models/mysql/jobs.js'
 import { validateJob, validatePartialJob } from './schemas/jobs.js'
 import authRouter from './routes/authRoutes.js'
-import jwt from 'jsonwebtoken'
 import dotenv from 'dotenv'
 import { corsMiddlewares } from './middlewares/cors.js'
 
@@ -17,32 +16,8 @@ app.disable('x-powered-by')
 
 app.use(corsMiddlewares())
 
-// Middleware de autorización
-const requireAuth = (req, res, next) => {
-  const authHeader = req.headers.authorization
-  if (!authHeader) {
-    return res.sendStatus(401)
-  }
-
-  const token = authHeader.split(' ')[1]
-  console.log(token)
-
-  jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
-    if (err) {
-      console.log(err)
-      return res.sendStatus(403)
-    }
-
-    req.user = user
-
-    next()
-  })
-}
-
 // auth rutas
 app.use(authRouter)
-
-app.use(requireAuth)
 
 // Obtener todas las ofertas de trabajo
 app.get('/jobs', async (req, res) => {
