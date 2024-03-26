@@ -1,19 +1,21 @@
 'use client'
 import axios from 'axios'
 import { useState, FormEvent } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function Register () {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const router = useRouter()
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
     try {
-      const res = await axios.post('http://localhost:1234/register', {
+      await axios.post('http://localhost:1234/register', {
         username, password
       })
-      console.log(res.data)
+      router.push('/dashboard')
     } catch (error) {
       console.error(error)
     }
