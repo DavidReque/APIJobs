@@ -12,9 +12,11 @@ export default function Login () {
     e.preventDefault()
 
     try {
-      await axios.post('http://localhost:1234/login', {
+      const res = await axios.post('http://localhost:1234/login', {
         username, password
       })
+      localStorage.setItem('token', res.data.token)
+
       router.push('/dashboard')
     } catch (error) {
       console.error(error)

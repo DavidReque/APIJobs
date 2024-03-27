@@ -4,6 +4,7 @@ import { validateJob, validatePartialJob } from './schemas/jobs.js'
 import authRouter from './routes/authRoutes.js'
 import dotenv from 'dotenv'
 import { corsMiddlewares } from './middlewares/cors.js'
+import { requireAuth } from './middlewares/authMiddleware.js'
 
 dotenv.config()
 
@@ -18,6 +19,8 @@ app.use(corsMiddlewares())
 
 // auth rutas
 app.use(authRouter)
+
+app.use(requireAuth)
 
 // Obtener todas las ofertas de trabajo
 app.get('/jobs', async (req, res) => {

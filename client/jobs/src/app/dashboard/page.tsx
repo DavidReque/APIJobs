@@ -17,7 +17,13 @@ export default function Register () {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const res = await axios.get<Job[]>('http://localhost:1234/jobs')
+        const token = localStorage.getItem('token')
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+        const res = await axios.get<Job[]>('http://localhost:1234/jobs', config)
         setJobs(res.data)
       } catch (error) {
         console.error(error)
