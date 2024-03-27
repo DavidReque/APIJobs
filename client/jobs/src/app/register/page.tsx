@@ -12,12 +12,9 @@ export default function Register () {
     e.preventDefault()
 
     try {
-      const res = await axios.post('http://localhost:1234/register', {
+      await axios.post('http://localhost:1234/register', {
         username, password
       })
-
-      localStorage.setItem('token', res.data.token)
-
       router.push('/dashboard')
     } catch (error) {
       console.error(error)
